@@ -1,5 +1,6 @@
 package org.hotel.hotel.controller;
 
+import org.hotel.hotel.dto.HotelDTO;
 import org.hotel.hotel.model.Hotel;
 import org.hotel.hotel.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,12 @@ public class HotelController {
     private HotelService hotelService;
 
     @GetMapping
-    public List<Hotel> getAllHotels() {
+    public List<HotelDTO> getAllHotels() {
         return hotelService.getAllHotels();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Hotel> getHotelById(@PathVariable Long id) {
+    public ResponseEntity<HotelDTO> getHotelById(@PathVariable Long id) {
         return hotelService.getHotelById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

@@ -1,5 +1,7 @@
 package org.hotel.hotel.service;
 
+import org.hotel.hotel.dto.HotelDTO;
+import org.hotel.hotel.mapper.HotelDTOMapper;
 import org.hotel.hotel.model.Hotel;
 import org.hotel.hotel.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelService {
@@ -14,12 +17,15 @@ public class HotelService {
     @Autowired
     private HotelRepository hotelRepository;
 
-    public List<Hotel> getAllHotels() {
-        return hotelRepository.findAll();
+    public List<HotelDTO> getAllHotels() {
+        return hotelRepository.findAll().stream()
+                .map(HotelDTOMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Hotel> getHotelById(Long id) {
-        return hotelRepository.findById(id);
+    public Optional<HotelDTO> getHotelById(Long id) {
+        return hotelRepository.findById(id)
+                .map(HotelDTOMapper::toDto);
     }
 
     public Hotel createHotel(Hotel hotel) {
