@@ -1,5 +1,6 @@
 package org.hotel.hotel.service;
 
+import org.hotel.hotel.dto.HotelCreateDTO;
 import org.hotel.hotel.dto.HotelDTO;
 import org.hotel.hotel.mapper.HotelDTOMapper;
 import org.hotel.hotel.model.Hotel;
@@ -28,19 +29,27 @@ public class HotelService {
                 .map(HotelDTOMapper::toDto);
     }
 
-    public Hotel createHotel(Hotel hotel) {
-        return hotelRepository.save(hotel);
+    public HotelDTO createHotel(HotelCreateDTO dto) {
+        Hotel hotel = new Hotel();
+        hotel.setName(dto.name());
+        hotel.setAddress(dto.address());
+
+        Hotel saved = hotelRepository.save(hotel);
+        return HotelDTOMapper.toDto(saved);
     }
 
-    public Hotel updateHotel(Long id, Hotel updatedHotel) {
-        return hotelRepository.findById(id)
+    public HotelDTO updateHotel(Long id, HotelCreateDTO dto) {
+        Hotel updated = hotelRepository.findById(id)
                 .map(hotel -> {
-                    hotel.setName(updatedHotel.getName());
-                    hotel.setAddress(updatedHotel.getAddress());
+                    hotel.setName(dto.name());
+                    hotel.setAddress(dto.address());
                     return hotelRepository.save(hotel);
                 })
                 .orElseThrow(() -> new RuntimeException("Hotel not found"));
+
+        return HotelDTOMapper.toDto(updated);
     }
+
 
     public void deleteHotel(Long id) {
         hotelRepository.deleteById(id);

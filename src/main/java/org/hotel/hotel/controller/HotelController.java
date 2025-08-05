@@ -1,5 +1,6 @@
 package org.hotel.hotel.controller;
 
+import org.hotel.hotel.dto.HotelCreateDTO;
 import org.hotel.hotel.dto.HotelDTO;
 import org.hotel.hotel.model.Hotel;
 import org.hotel.hotel.service.HotelService;
@@ -29,14 +30,15 @@ public class HotelController {
     }
 
     @PostMapping
-    public Hotel createHotel(@RequestBody Hotel hotel) {
-        return hotelService.createHotel(hotel);
+    public ResponseEntity<HotelDTO> createHotel(@RequestBody HotelCreateDTO dto) {
+        HotelDTO created = hotelService.createHotel(dto);
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Hotel> updateHotel(@PathVariable Long id, @RequestBody Hotel hotel) {
+    public ResponseEntity<HotelDTO> updateHotel(@PathVariable Long id, @RequestBody HotelCreateDTO dto) {
         try {
-            Hotel updated = hotelService.updateHotel(id, hotel);
+            HotelDTO updated = hotelService.updateHotel(id, dto);
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
