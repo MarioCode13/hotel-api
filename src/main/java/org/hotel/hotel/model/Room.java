@@ -17,7 +17,7 @@ public class Room {
     private Long id;
 
     private String roomNumber;
-    private String type; // "single", "double", "suite"
+    private String type;
     private double pricePerNight;
 
     @ManyToOne
